@@ -6,7 +6,7 @@ pipeline{
 		stages{
 			stage ("Pull the code from SCM"){
 				steps {
-					git branch: 'main', url: 'https://github.com/gouravaas/new_java_docker_app.git'
+					git branch: 'main', url: 'https://github.com/Nitin9606/java-docker-app.git'
 					}
 				}
 			stage (" Build the code "){
@@ -18,21 +18,21 @@ pipeline{
 			stage (" Build the image "){
 				steps {
 					sh 'sudo docker build -t java-repo:$BUILD_TAG .'
-					sh 'sudo docker tag java-repo:$BUILD_TAG gouravaas/java-app:$BUILD_TAG'
+					sh 'sudo docker tag java-repo:$BUILD_TAG nitinbijlwan/pipeline-java:$BUILD_TAG'
 					}
 				}
 			stage ( " push the image "){
 				steps {
 				withCredentials([string(credentialsId: 'docker_hub_passwd', variable: 'docker_hub_password_var')]){
-					sh 'sudo docker login -u gouravaas -p $docker_hub_password_var'
-					sh 'sudo docker push gouravaas/java-app:$BUILD_TAG'
+					sh 'sudo docker login -u nitinbijlwan -p $docker_hub_password_var'
+					sh 'sudo docker push nitinbijlwan/pipeline-java:$BUILD_TAG'
 						}
 					}
 				}
 			stage("QAT Testing") {
 				steps {
 					script {
-						sh 'sudo docker run -dit -p 8080:8080 gouravaas/java-app:$BUILD_TAG'
+						sh 'sudo docker run -dit -p 8080:8080 nitinbijlwan/pipeline-java:$BUILD_TAG'
 						}
 					}
 				}
@@ -40,7 +40,7 @@ pipeline{
 				steps {
 					retry(5) {
 						script {
-							sh 'curl --silent http://43.205.124.201:8080/java-web-app/ | grep -i "india" > /home/ubuntu/test.txt'
+							sh 'curl --silent http://172.31.40.138:8080/java-web-app/ | grep -i "india" > /home/ubuntu/test.txt'
 							}
 						}
 					}
