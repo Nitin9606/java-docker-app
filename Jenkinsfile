@@ -56,7 +56,7 @@ pipeline{
 			stage("Prod Env") {
 				steps {
 					sshagent(['ubuntu_slave']) {
-			    	 	sh "ssh -o StrictHostKeyChecking=no ubuntu@65.0.17.108 sudo docker run  -d  -p  :8080  nitin9606/pipeline-java:$BUILD_TAG"
+			    	 	sh "ssh -o StrictHostKeyChecking=no ubuntu@172.31.32.215 sudo docker run  -d  -p  :8080  nitin9606/pipeline-java:$BUILD_TAG"
 				}
 			}
 		}
