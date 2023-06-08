@@ -45,6 +45,21 @@ pipeline{
 						}
 					}
 				}
+			stage("Approval status") {
+				steps {
+					script {
+						 Boolean userInput = input(id: 'Proceed1', message: 'Promote build?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']])
+                				echo 'userInput: ' + userInput
+					}
+				}
 			}
+			stage("Prod Env") {
+				steps {
+					sshagent(['ubuntu']) {
+			    	 	sh "ssh -o StrictHostKeyChecking=no ubuntu@13.233.83.242 sudo docker run  -d  -p  49153:8080  gouravaas/java-app:$BUILD_TAG"
+				}
+			}
+		}
+	}
 		
 }
